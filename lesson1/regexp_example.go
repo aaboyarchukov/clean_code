@@ -1,11 +1,9 @@
-package regexp_example
+package lesson1
 
 import (
 	"regexp"
 )
 
-// old name: IsINN
-// new name: FindINN
 func FindINN(stringWithINN string) bool {
 	// arguments for function
 	// old name: inn
@@ -22,8 +20,6 @@ func FindINN(stringWithINN string) bool {
 	return len(matchesForINN) != 0
 }
 
-// old name: IsPhone
-// new name: FindPhone
 func FindPhone(stringWithPhone string) bool {
 	// arguments for function
 	// old name: row
@@ -35,8 +31,6 @@ func FindPhone(stringWithPhone string) bool {
 	return regexpForPhone.FindString(stringWithPhone) != ""
 }
 
-// old name: IsEmail
-// new name: FindEmail
 func FindEmail(stringWithEmail string) bool {
 	// arguments for function
 	// old name: row
