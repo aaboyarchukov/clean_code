@@ -30,22 +30,28 @@ func (l *LinkedList) AddInTail(item Node) {
 func (l *LinkedList) Count() int {
 	// old name: count
 	// new name: countAllNodesInLL
-	var countAllNodesInLL int
-	tempNode := l.head
-	for tempNode != nil {
-		countAllNodesInLL++
-		tempNode = tempNode.next
+	var countAllNodes int
+
+	// old name: tempNode
+	// new name: currentNode
+	currentNode := l.head
+
+	for currentNode != nil {
+		countAllNodes++
+		currentNode = currentNode.next
 	}
-	return countAllNodesInLL
+	return countAllNodes
 }
 
 func (l *LinkedList) Find(n int) (Node, error) {
-	tempNode := l.head
-	for tempNode != nil {
-		if tempNode.value == n {
-			return *tempNode, nil
+	// old name: tempNode
+	// new name: currentNode
+	currentNode := l.head
+	for currentNode != nil {
+		if currentNode.value == n {
+			return *currentNode, nil
 		}
-		tempNode = tempNode.next
+		currentNode = currentNode.next
 	}
 	return Node{value: -1, next: nil}, errors.New("node is not finding")
 }
@@ -53,15 +59,20 @@ func (l *LinkedList) Find(n int) (Node, error) {
 // task 4
 // t = O(n), where n = len(list)
 func (l *LinkedList) FindAll(n int) []Node {
-	var nodes []Node
-	tempNode := l.head
-	for tempNode != nil {
-		if tempNode.value == n {
-			nodes = append(nodes, *tempNode)
+	// old name: nodes
+	// new name: listOfNodesWithValueN
+	var listOfNodesWithValueN []Node
+
+	// old name: tempNode
+	// new name: currentNode
+	currentNode := l.head
+	for currentNode != nil {
+		if currentNode.value == n {
+			listOfNodesWithValueN = append(listOfNodesWithValueN, *currentNode)
 		}
-		tempNode = tempNode.next
+		currentNode = currentNode.next
 	}
-	return nodes
+	return listOfNodesWithValueN
 }
 
 // task 1
@@ -73,34 +84,42 @@ func (l *LinkedList) Delete(n int, all bool) {
 		return
 	}
 
-	tempNode := l.head
-	var prev *Node
+	// old name: tempNode
+	// new name: currentNode
+	currentNode := l.head
 
-	if l.Count() == 1 && tempNode.value == n {
+	// old name: prev
+	// new name: prevNode
+	var prevNode *Node
+
+	if l.Count() == 1 && currentNode.value == n {
 		l.Clean()
 		return
 	}
 
-	for tempNode != nil {
-		deleted := false
-		if tempNode.value == n && tempNode == l.head {
-			l.head = tempNode.next
-			deleted = true
-		} else if tempNode.value == n && tempNode == l.tail {
-			prev.next = nil
-			l.tail = prev
-			deleted = true
-		} else if tempNode.value == n {
-			prev.next = tempNode.next
-			deleted = true
+	for currentNode != nil {
+		// old name: deleted
+		// new name: isNodeDeleted
+		isNodeDeleted := false
+
+		if currentNode.value == n && currentNode == l.head {
+			l.head = currentNode.next
+			isNodeDeleted = true
+		} else if currentNode.value == n && currentNode == l.tail {
+			prevNode.next = nil
+			l.tail = prevNode
+			isNodeDeleted = true
+		} else if currentNode.value == n {
+			prevNode.next = currentNode.next
+			isNodeDeleted = true
 		}
-		if !all && deleted {
+		if !all && isNodeDeleted {
 			return
 		}
-		if !deleted {
-			prev = tempNode
+		if !isNodeDeleted {
+			prevNode = currentNode
 		}
-		tempNode = tempNode.next
+		currentNode = currentNode.next
 	}
 }
 
@@ -111,16 +130,20 @@ func (l *LinkedList) Insert(after *Node, add Node) {
 		l.InsertFirst(add)
 		return
 	}
-	tempNode := l.head
+
+	// old name: tempNode
+	// new name: currentNode
+	currentNode := l.head
+
 	// if node will not exists, then we have to finding it first
-	for tempNode.value != after.value {
-		tempNode = tempNode.next
+	for currentNode.value != after.value {
+		currentNode = currentNode.next
 	}
-	if tempNode == l.tail {
+	if currentNode == l.tail {
 		l.AddInTail(add)
 	} else {
-		nextNode := tempNode.next
-		tempNode.next = &add
+		nextNode := currentNode.next
+		currentNode.next = &add
 		add.next = nextNode
 	}
 
@@ -176,15 +199,20 @@ func EqualLists(l1 *LinkedList, l2 *LinkedList) bool {
 		return false
 	}
 
-	countL1, countL2 := l1.Count(), l2.Count()
-	if countL1 == countL2 {
-		tempL1, tempL2 := l1.head, l2.head
-		for tempL1 != nil && tempL2 != nil {
-			if tempL1.value != tempL2.value {
+	// old name: countL1, countL2
+	// new name: countAllNodesOfL1, countAllNodesOfL2
+	countAllNodesOfL1, countAllNodesOfL2 := l1.Count(), l2.Count()
+
+	if countAllNodesOfL1 == countAllNodesOfL2 {
+		// old name: tempL1, tempL2
+		// new name: currentNodeOfL1, currentNodeOfL2
+		currentNodeOfL1, currentNodeOfL2 := l1.head, l2.head
+		for currentNodeOfL1 != nil && currentNodeOfL2 != nil {
+			if currentNodeOfL1.value != currentNodeOfL2.value {
 				return false
 			}
-			tempL1 = tempL1.next
-			tempL2 = tempL2.next
+			currentNodeOfL1 = currentNodeOfL1.next
+			currentNodeOfL2 = currentNodeOfL2.next
 		}
 
 		return true

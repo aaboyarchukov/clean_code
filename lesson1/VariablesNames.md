@@ -1,6 +1,7 @@
 # Имена переменных
 
 
+
 При объявлении переменных в программе необходимо соблюдать правильность их имен, для удобства чтения и понимания программы, а для этого необходимо следовать нескольким рекомендациям (все рекомендации пересекаются между собой, это не последовательность действий). Также данные рекомендации касаются как переменных так и названия функций и методов:
 
   
@@ -28,12 +29,12 @@ var sumOfEvenNumbers int
 Нам необходимо определить строку в которой будет содержаться хэш для пароля. В плохом примере также не отражен смысл - для чего нужен хэш, а переменная `row` так вообще не несет определенности:
 
 ```go
-	// bad example ❌
-	var row string
-	var hash string
-	
-	// good example ✅
-	var hashForPassword string
+// bad example ❌
+var row string
+var hash string
+
+// good example ✅
+var hashForPassword string
 ```
 
 
@@ -47,22 +48,22 @@ var sumOfEvenNumbers int
 Мы высчитываем пробег автомобиля, в данном случае результатом будет общее количество километров. В плохом примере нет точности и однозначности результата:
 
 ```go
-	// bad example ❌
-	var kms int64
-	var countingKm int64
+// bad example ❌
+var kms int64
+var countingKm int64
 
-	// good example ✅
-	var totalCountCarKm int64
+// good example ✅
+var totalCountCarKm int64
 ```
 
 Мы получаем данные о пользователях. В плохом примере непонятно какие именно данные мы получаем:
 
 ```go
-	// bad example ❌
-	var getDataFromDB []Users
+// bad example ❌
+var getDataFromDB []Users
 
-	// good example ✅
-	var dataAboutUsers []Users
+// good example ✅
+var dataAboutUsers []Users
 ```
 
 3. Хорошее имя должно нести в себе точность и однозначность, оно должно быть конкретно и только для одной цели.
@@ -90,9 +91,59 @@ oldName - newName
 // info about variable
 ```
 
-[regexp_examples.go](https://github.com/aaboyarchukov/clean_code/blob/master/lesson1/regexp_example.go)
+[**regexp_examples.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson1/regexp_example.go)
 
 
+```go
+regINN_10 - regexpForINN
+// регулярное выражение для нахождения ИНН
+
+matchesINN_10 - matchesForINN
+// переменная, которая содержит в себе все совпадения по регулярному выражению для нахождения ИНН в тексте
+
+regPhone - regexpForPhone
+// регулярное выражение для нахождения номера телефона
+
+regMail - regexpForEmail
+// регулярное выражение для нахождения адреса электронной почты
+
+inn - stringWithINN
+// строка, в которой содержится ИНН
+
+row - stringWithPhone 
+// строка, в которой содержится номер телефона
+
+row - stringWithEmail
+// строка, в которой содержится адрес электронной почты
 ```
-Пример
+
+[**linked_list_1_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson1/linked_list_1_example.go)
+
+```go
+count - countAllNodes
+// количество всех узлов в связном списке
+
+nodes - listOfNodesWithValueN
+// список всех узлов в связном списке с определенным значением
+
+tempNode - currentNode
+// текущий узел связного списка, на котором мы находимся
+
+prev - prevNode
+// предыдущий узел связного списка
+
+deleted - isNodeDeleted
+// флаг, который показывает удален ли узел из связного списка
+
+countL1 - countAllNodesOfL1
+// количество всех узлов в связном списке 1
+
+countL2 - countAllNodesOfL2
+// количество всех узлов в связном списке 2
+
+tempL1 - currentNodeOfL1
+// текущий узел в связном списке 1
+
+tempL2 - currentNodeOfL2
+// текущий узел в связном списке 2
 ```
