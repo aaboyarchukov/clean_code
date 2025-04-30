@@ -1,5 +1,4 @@
 # Имена переменных 2
-
 Далее изучим еще одни рекомендации:
 
 1. Имена, объявляемых переменных, должны быть на подходящем уровне абстракции
@@ -113,12 +112,133 @@ var hp []byte
 var hashingPassword []byte
 ```
 
+
+Пример ответа:
+
+```
+oldName - newName
+// info about variable
+```
+
 Задания:
 
 6.1 Разберите свой код, и сделайте пять примеров, где можно более наглядно учесть в именах переменных уровни абстракции.
 
+[**relations_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/relations_example.go)
+
+```go
+object - updateCompanyObject
+// обновление объекта конкретной компании в базе данных
+
+equipments - getEquipments
+// получение всех оборудований
+
+result - getEquipmentsIDs
+// идентифицируещие номера оборудований
+
+object - getObjectEquipments
+// поиск всех оборудований для определенного объекта
+
+object - updateWinnerCompany
+// обновление компании победителя
+
+result - getActions
+// получение всех действий
+
+object - getActionsObject
+// объект, в котором хранятся все действия
+```
+
+
 6.2. Приведите четыре примера, где вы в качестве имён переменных использовали или могли бы использовать технические термины из информатики.
+
+[**contain_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/contain_example.go)
+
+```go
+textMap - textMap // (use Map in context variable name)
+// результирующий словарь из исходного текста
+
+fileData - fileBytes // (string)
+// считывание файла и получение массива байт данных
+
+stringData - fileString // (string)
+// преобразование полученных байт из файла в строку
+
+arrRows - arrayOfString // (string, array)
+// разделение строки на массив из строк
+
+item - arrayItem // (array)
+// получение одного экземпляра из массива
+
+arrItems - splitArray // (array, split)
+// разделение экземпляра из массива на массив из строк
+```
+
+[**linked_list_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/linked_list_example.go)
+
+```go
+resultLL - linkedList // (linked list)
+// формирование связного списка из значений 
+```
 
 6.3. Придумайте или найдите в своём коде три примера, когда имена переменных даны с учётом контекста (функции, метода, класса).
 
+[**server_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/server_example.go)
+
+```go
+// перечислим примеры имен с контекстом
+errValidate, errLogin, errRegister, userID
+```
+
+[**jwt_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/jwt_example.go)
+
+```go
+// перечислим примеры имен с контекстом
+signedToken, errSignedToken, secretKey
+```
+
 6.4. Найдите пять имён переменных в своём коде, длины которых не укладываются в 8-20 символов, и исправьте, чтобы они укладывались в данный диапазон.
+
+[**login_user_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/login_user_example.go)
+
+```go
+err - errJSONUnmarshal
+```
+
+[**get_object_date_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/get_object_date_example.go)
+
+```go
+result - requestBody
+// тело запроса
+
+err - errJSONUnmarshal
+// ошибка при парсинге объекта
+
+date - objectDate
+// дата принадлежащая объекту
+```
+
+[**get_tables_columns_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/get_tables_columns_example.go)
+
+```go
+path - filePath
+// путь к файлу
+
+ok - notEmptyPathENV
+// статус, сообщающий о пустоте переменной в env
+
+files - filesFromDir
+// файлы из директории
+
+file - firstFile
+// первый файл из директории
+
+name - nameOfFile
+// имя файла
+
+rows - rowsFromFile
+// строки, считанные из файла
+
+columns - columnsForAnswer
+// колонки для ответа на запрос
+```

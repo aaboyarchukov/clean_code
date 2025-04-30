@@ -1,6 +1,7 @@
 package lesson2
 
 func UpdateCompanyData(companyID string, columnName string, companyData interface{}) (bool, error) {
+	// 6.1
 	// old name: object
 	// new name: updateCompanyObject
 	updateCompanyObject := DataBase.DB.Model(&models.Companies{}).
@@ -15,14 +16,17 @@ func UpdateCompanyData(companyID string, columnName string, companyData interfac
 }
 
 func GetEquipmentsOfObject(objectID string) ([]uint, error) {
+	// 6.1
 	// old name: equipments
 	// new name: getEquipments
 	var getEquipments []models.Equipment_to_object
 
+	// 6.1
 	// old name: result
 	// new name: getEquipmentsIDs
 	var getEquipmentsIDs []uint
 
+	// 6.1
 	// old name: object
 	// new name: getObjectEquipments
 	getObjectEquipments := DataBase.DB.Model(&models.Equipment_to_object{}).Select("*").
@@ -43,6 +47,7 @@ func GetEquipmentsOfObject(objectID string) ([]uint, error) {
 }
 
 func UpdateWinner(objectID string, winnerID string) error {
+	// 6.1
 	// old name: object
 	// new name: updateWinnerCompany
 	updateWinnerCompany := DataBase.DB.Model(&models.Work_Part{}).Where("work_parts.object_refer = ?", objectID).
@@ -55,10 +60,12 @@ func UpdateWinner(objectID string, winnerID string) error {
 }
 
 func GetActions(objectID string) ([]models.ActivitiesAndTypes, error) {
+	// 6.1
 	// old name: result
 	// new name: getActions
 	var getActions []models.ActivitiesAndTypes
 
+	// 6.1
 	// old name: object
 	// new name: getActionsObject
 	getActionsObject := DataBase.DB.Model(&models.ActivitiesAndTypes{}).Select("activities_and_types.*").
