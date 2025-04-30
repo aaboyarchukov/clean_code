@@ -1,4 +1,5 @@
 # Имена переменных 2
+
 Далее изучим еще одни рекомендации:
 
 1. Имена, объявляемых переменных, должны быть на подходящем уровне абстракции
@@ -203,6 +204,7 @@ signedToken, errSignedToken, secretKey
 
 ```go
 err - errJSONUnmarshal
+// ошибка при парсинге объекта
 ```
 
 [**get_object_date_example.go**](https://github.com/aaboyarchukov/clean_code/blob/master/lesson2/get_object_date_example.go)
