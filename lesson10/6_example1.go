@@ -78,9 +78,12 @@ func Get_kp(ctx *fiber.Ctx) error {
 		IndRow     int    `json:"ind_row"`
 		IndColumn  int    `json:"ind_column"`
 	}
-	strColumns := files.Value["columns"][INDX_OF_VALUE_IN_MAP]
+
+	// old: strColumns
+	// new var columnsFromFile string
+	var columnsFromFile string = files.Value["columns"][INDX_OF_VALUE_IN_MAP]
 	var columns []answerColumns
-	err_unmurshull := json.Unmarshal([]byte(strColumns), &columns)
+	err_unmurshull := json.Unmarshal([]byte(columnsFromFile), &columns)
 	if err_unmurshull != nil {
 		return ctx.JSON(answerResponse{
 			Ok:         false,
@@ -90,7 +93,9 @@ func Get_kp(ctx *fiber.Ctx) error {
 		})
 	}
 
-	resultColumns := data_analyze.ColumnsValues{
+	// old: resultColumns
+	// new: var resultColumns data_analyze.ColumnsValues
+	var resultColumns data_analyze.ColumnsValues = data_analyze.ColumnsValues{
 		EquipmentName: data_analyze.Point{
 			Row:    columns[CELL_FOR_NAME].IndRow,
 			Column: (columns[CELL_FOR_NAME].IndColumn),
@@ -134,15 +139,17 @@ func Get_kp(ctx *fiber.Ctx) error {
 	}
 
 	for _, file := range files.File["file"] {
-		destination := fmt.Sprintf("%s%s", path, file.Filename)
-		if save_file_err := ctx.SaveFile(file, destination); save_file_err != nil {
+		// old: destination
+		// new: var fileDestination string
+		var fileDestination string = fmt.Sprintf("%s%s", path, file.Filename)
+		if save_file_err := ctx.SaveFile(file, fileDestination); save_file_err != nil {
 			log.Println("ошибка сохранения файла")
 			log.Println(save_file_err)
 			return save_file_err
 		}
 	}
 
-	objects, err_get_kp := Get_KP(tenderId, resultColumns, ndsStatus)
+	tenders, err_get_kp := Get_KP(tenderId, resultColumns, ndsStatus)
 
 	if err_get_kp != nil {
 		fmt.Println("err_get_kp: ", err_get_kp)
@@ -154,7 +161,7 @@ func Get_kp(ctx *fiber.Ctx) error {
 		})
 	}
 
-	add_vendor_err := database.Add_vendors(objects.WorkPartID, objects.CompanyInfo, tenderId, strings.ToLower(tenderEquipmentType), objects.Equipments_from_kp)
+	add_vendor_err := database.Add_vendors(tenders.WorkPartID, tenders.CompanyInfo, tenderId, strings.ToLower(tenderEquipmentType), tenders.Equipments_from_kp)
 	if add_vendor_err != nil {
 		fmt.Println("add_vendor_err: ", add_vendor_err)
 		return ctx.JSON(answerResponse{
@@ -165,7 +172,7 @@ func Get_kp(ctx *fiber.Ctx) error {
 		})
 	}
 
-	vendorEquipments, err_get_vendor_equipments := database.Get_equipments_for_company(strings.ToLower(tenderEquipmentType), tenderId, objects.CompanyInfo.CompanyID)
+	vendorEquipments, err_get_vendor_equipments := database.Get_equipments_for_company(strings.ToLower(tenderEquipmentType), tenderId, tenders.CompanyInfo.CompanyID)
 	if err_get_vendor_equipments != nil {
 		fmt.Println("err_get_vendor_equipments: ", err_get_vendor_equipments)
 		return ctx.JSON(answerResponse{
@@ -176,12 +183,153 @@ func Get_kp(ctx *fiber.Ctx) error {
 		})
 	}
 
-	objects.Equipments_from_kp = vendorEquipments
+	tenders.Equipments_from_kp = vendorEquipments
 
 	return ctx.JSON(answerResponse{
 		Ok:         true,
 		StatusCode: 200,
 		Errors:     nil,
-		Data:       objects,
+		Data:       tenders,
 	})
+}
+
+func (l *OrderedList[T]) Compare(v1 T, v2 T) int {
+
+	var valueStr1, valueStr2 string
+	// old: flagStr
+	// new: var flagStr bool
+	var flagStr bool = false
+
+	if value, ok := any(v1).(string); ok {
+		valueStr1 = strings.Trim(value, " ")
+		flagStr = true
+	}
+
+	if value, ok := any(v2).(string); ok {
+		valueStr2 = strings.Trim(value, " ")
+		flagStr = true
+	}
+
+	switch flagStr {
+	case false:
+		if v1 < v2 {
+			return -1
+		}
+		if v1 > v2 {
+			return +1
+		}
+
+	case true:
+		if valueStr1 < valueStr2 {
+			return -1
+		}
+		if valueStr1 > valueStr2 {
+			return +1
+		}
+	}
+
+	return 0
+}
+
+func (l *OrderedList[T]) Delete(n T) {
+	if l.head == nil {
+		return
+	}
+
+	if l.Count() == 1 {
+		l.Clear(l._ascending)
+		return
+	}
+
+	// old: currentNode
+	// new: var currentNode *Node[T]
+	var currentNode *Node[T] = l.head
+	var deleted bool = false
+	for currentNode != nil {
+		compareNode := l.Compare(currentNode.value, n)
+		if compareNode == 0 && currentNode == l.head {
+			l.head = currentNode.next
+			if l.head != nil {
+				l.head.prev = nil
+			}
+			deleted = true
+		} else if compareNode == 0 && currentNode == l.tail {
+			l.tail = currentNode.prev
+			if l.tail != nil {
+				l.tail.next = nil
+			}
+			deleted = true
+		} else if compareNode == 0 {
+			prevNode := currentNode.prev
+			nextNode := currentNode.next
+			prevNode.next = nextNode
+			nextNode.prev = prevNode
+			deleted = true
+		}
+
+		if deleted {
+			break
+		}
+		currentNode = currentNode.next
+	}
+}
+
+func (l *OrderedList[T]) Add(item T) {
+	// old: node
+	// new: var addNode Node[T]
+	var addNode Node[T] = Node[T]{
+		value: item,
+	}
+
+	size := l.Count()
+
+	if size == 0 {
+		l.head = &addNode
+		l.tail = &addNode
+		return
+	}
+
+	compareHead, compareTail := l.Compare(addNode.value, l.head.value), l.Compare(addNode.value, l.tail.value)
+
+	if (l._ascending && (compareTail == 1 || compareTail == 0)) ||
+		(!l._ascending && (compareTail == -1 || compareTail == 0)) {
+		l.tail.next = &addNode
+		addNode.prev = l.tail
+		l.tail = &addNode
+		return
+	}
+	if (l._ascending && (compareHead == -1 || compareHead == 0)) ||
+		(!l._ascending && (compareHead == 1 || compareHead == 0)) {
+		addNode.next = l.head
+		l.head.prev = &addNode
+		l.head = &addNode
+		return
+	}
+
+	left, right := l.head, l.head.next
+	for right != nil {
+		compareNodeAndLeft := l.Compare(addNode.value, left.value)
+		compareNodeAndRight := l.Compare(addNode.value, right.value)
+
+		// old: asc
+		// new: var asc bool
+		var asc bool = (compareNodeAndLeft == 1 || compareNodeAndLeft == 0) &&
+			(compareNodeAndRight == -1 || compareNodeAndRight == 0)
+
+		// old: desc
+		// new: var desc bool
+		var desc bool = (compareNodeAndLeft == -1 || compareNodeAndLeft == 0) &&
+			(compareNodeAndRight == 1 || compareNodeAndRight == 0)
+
+		if (l._ascending && asc) || (!l._ascending && desc) {
+			addNode.prev = left
+			addNode.next = right
+			left.next = &addNode
+			right.prev = &addNode
+			return
+		}
+
+		left = left.next
+		right = right.next
+	}
 }

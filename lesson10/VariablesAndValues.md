@@ -76,5 +76,38 @@ equipment_type - var tenderEquipmentType string
 nds - var ndsStatus string
 // ясно выразил переменную
 
+strColumns - var columnsFromFile string
+// ясно выразил переменную
 
+resultColumns - var resultColumns data_analyze.ColumnsValues
+// ясно выразил переменную
+
+destination - var fileDestination string
+// ясно выразил переменную
+
+flagStr - var flagStr bool
+// ясно выразил переменную
+
+currentNode := l.head
+deleted := false
+for currentNode != nil {
+	// ...
+}
+// здесь статус удаления отслеживаетс только один раз
+// поэтому объявляем ее перед циклом
+
+currentNode - var currentNode *Node[T]
+// ясно выразил переменную
+
+deleted - var deleted bool
+// ясно выразил переменную
+
+node - var addNode Node[T]
+// ясно выразил переменную
+
+asc - var asc bool
+// ясно выразил переменную
+
+desc - var desc bool
+// ясно выразил переменную
 ```
