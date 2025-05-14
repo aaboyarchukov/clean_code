@@ -1,7 +1,12 @@
 package lesson3
 
 import (
+	"constraints"
+	"context"
+	"fmt"
 	"log"
+	"log/slog"
+	"strings"
 	"time"
 )
 
@@ -321,20 +326,6 @@ func (l *LinkedList) Delete(n int, all bool) {
 	}
 }
 
-
-package logic
-
-import (
-	"context"
-	"fmt"
-	"log/slog"
-	auth_jwt "system_of_monitoring_statistics/services/auth/internal/jwt"
-	"system_of_monitoring_statistics/services/auth/internal/models"
-	"time"
-
-	"golang.org/x/crypto/bcrypt"
-)
-
 type UserProvider interface {
 	GetUser(ctx context.Context, login string) (models.User, error)
 	IsLoginExist(ctx context.Context, login string) (bool, error)
@@ -383,7 +374,7 @@ func (a *Auth) Login(ctx context.Context,
 
 	userData, errGetUserData := a.userProvider.GetUser(ctx, email)
 	if errGetUserData != nil {
-		// TODO: add specific error processing
+
 		log.Warn("user not found", slog.Attr{
 			Key:   "error",
 			Value: slog.StringValue(errGetUserData.Error()),
@@ -407,7 +398,6 @@ func (a *Auth) Login(ctx context.Context,
 		return "", fmt.Errorf("%s: %w", operation, errComparePasswords)
 	}
 
-	// generate jwt
 	token, errGetToken := auth_jwt.GenerateJWT(userData, time.Hour*8)
 	if errGetToken != nil {
 		log.Error("err generate jwt", slog.Attr{
@@ -489,7 +479,6 @@ func (a *Auth) Register(ctx context.Context,
 	return newUserID, nil
 }
 
-
 type Node[T constraints.Ordered] struct {
 	prev  *Node[T]
 	next  *Node[T]
@@ -506,7 +495,7 @@ type OrderedList[T constraints.Ordered] struct {
 func (l *OrderedList[T]) Compare(v1 T, v2 T) int {
 
 	var valueStr1, valueStr2 string
-	
+
 	// 7.1
 	// old name: flagStr
 	// new name: isStr
