@@ -19,6 +19,8 @@
 
 Задания:
 
+[13_example1.go](https://github.com/aaboyarchukov/clean_code/blob/master/lesson16/13_example1.go)
+
 ```go
 // ПУНКТ 1
 
